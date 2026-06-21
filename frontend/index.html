@@ -611,19 +611,20 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black text-white py-12">
+    <footer class="bg-black text-white py-8 md:py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Brand row — full width on mobile -->
+            <div class="flex items-center space-x-3 mb-6">
+                <img src="logo.png" alt="Codefliq Logo" class="w-9 h-9 rounded-lg">
+                <span class="text-lg font-bold font-display">Codefliq</span>
+                <p class="text-gray-400 text-sm hidden sm:block ml-2">— Custom web & app development studio.</p>
+            </div>
+            <p class="text-gray-400 text-sm mb-6 sm:hidden">Custom web and app development studio building exceptional digital experiences.</p>
+            <!-- Links grid: 2-col on mobile, 3-col on desktop -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
                 <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <img src="logo.png" alt="Codefliq Logo" class="w-10 h-10 rounded-lg">
-                        <span class="text-xl font-bold font-display">Codefliq</span>
-                    </div>
-                    <p class="text-gray-400">Custom web and app development studio building exceptional digital experiences.</p>
-                </div>
-                <div>
-                    <h3 class="font-semibold mb-4">Services</h3>
-                    <ul class="space-y-2 text-gray-400">
+                    <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-300">Services</h3>
+                    <ul class="space-y-1.5 text-gray-400 text-sm">
                         <li>Web Development</li>
                         <li>Mobile Apps</li>
                         <li>UI/UX Design</li>
@@ -631,17 +632,17 @@
                     </ul>
                 </div>
                 <div>
-                    <h3 class="font-semibold mb-4">Company</h3>
-                    <ul class="space-y-2 text-gray-400">
+                    <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-300">Company</h3>
+                    <ul class="space-y-1.5 text-gray-400 text-sm">
                         <li>About Us</li>
                         <li>Projects</li>
                         <li>Careers</li>
                         <li>Blog</li>
                     </ul>
                 </div>
-                <div>
-                    <h3 class="font-semibold mb-4">Connect</h3>
-                    <ul class="space-y-2 text-gray-400">
+                <div class="col-span-2 md:col-span-1">
+                    <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-300">Connect</h3>
+                    <ul class="space-y-1.5 text-gray-400 text-sm">
                         <li>hello@codefliq.com</li>
                         <li>Twitter</li>
                         <li>LinkedIn</li>
@@ -649,7 +650,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-gray-500 text-sm">
                 <p>&copy; 2024 Codefliq. All rights reserved.</p>
             </div>
         </div>
