@@ -159,6 +159,27 @@
         .group:hover .reveal-footer-text.revealed {
             transform: translateY(5%);
         }
+
+        /* ── Mobile Gallery: alternating slide-in animations (< lg only) ── */
+        @media (max-width: 1023px) {
+            .mob-slide-left {
+                opacity: 0;
+                transform: translateX(-60px);
+                transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .mob-slide-right {
+                opacity: 0;
+                transform: translateX(60px);
+                transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                            transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .mob-slide-left.mob-revealed,
+            .mob-slide-right.mob-revealed {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-black text-gray-900 dark:text-white overflow-x-hidden">
@@ -372,14 +393,14 @@
             </div>
             <!-- Mobile/Tablet responsive grid (visible only on < lg) -->
             <div class="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-3 p-3">
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop" alt="E-commerce platform" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&auto=format&fit=crop" alt="Mobile app interface" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=500&auto=format&fit=crop" alt="Featured project 1" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop" alt="Featured project 2" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=500&auto=format&fit=crop" alt="Dashboard design" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop" alt="Brand identity" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=500&auto=format&fit=crop" alt="Team collaboration" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
-                <figure class="w-full"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&auto=format&fit=crop" alt="Tech workspace" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-left"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop" alt="E-commerce platform" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-right"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&auto=format&fit=crop" alt="Mobile app interface" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-left"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=500&auto=format&fit=crop" alt="Featured project 1" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-right"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop" alt="Featured project 2" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-left"><img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=500&auto=format&fit=crop" alt="Dashboard design" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-right"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop" alt="Brand identity" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-left"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=500&auto=format&fit=crop" alt="Team collaboration" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
+                <figure class="w-full mob-slide-right"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&auto=format&fit=crop" alt="Tech workspace" class="transition-all duration-300 w-full h-64 object-cover rounded-md hover:scale-105"></figure>
             </div>
         </section>
         <footer class="group bg-slate-950 overflow-hidden relative">
@@ -682,6 +703,20 @@
                     lucide.createIcons();
                 });
             });
+        }
+
+        // Mobile Gallery: alternating slide-in on scroll (only runs on < lg screens)
+        if (window.innerWidth < 1024) {
+            const mobSlides = document.querySelectorAll('.mob-slide-left, .mob-slide-right');
+            const mobObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('mob-revealed');
+                        mobObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            mobSlides.forEach(el => mobObserver.observe(el));
         }
     </script>
 </body>
