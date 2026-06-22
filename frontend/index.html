@@ -254,8 +254,16 @@
                 <div class="container mx-auto flex flex-col items-center justify-start relative z-10">
                     <div class="flex flex-col items-center justify-center w-full h-screen relative">
                         <div class="absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl w-[300px] h-[400px] md:w-[800px] md:h-[600px] max-w-[95vw] max-h-[85vh]" style="box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.3);">
-                            <div class="relative w-full h-full border-[6px] border-black rounded-xl overflow-hidden">
-                                <video src="Developers_working_at_computers_202606220025.mp4" autoplay muted loop playsinline class="w-full h-full object-cover"></video>
+                            <div class="relative w-full h-full border-[6px] border-black rounded-xl overflow-hidden group cursor-pointer" id="video-container">
+                                <video id="showcase-video" src="Developers_working_at_computers_202606220025.mp4" loop playsinline class="w-full h-full object-cover"></video>
+                                
+                                <!-- Custom Play/Pause Overlay -->
+                                <div id="video-overlay" class="absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-300">
+                                    <button id="play-pause-btn" class="bg-white/20 hover:bg-white/30 text-white rounded-full p-5 backdrop-blur-md transition-all transform hover:scale-110 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                                        <i data-lucide="play" class="w-10 h-10 ml-1" id="play-icon"></i>
+                                        <i data-lucide="pause" class="w-10 h-10 hidden" id="pause-icon"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -791,6 +799,53 @@
                 } finally {
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Custom Video Player Logic
+        const videoContainer = document.getElementById('video-container');
+        const showcaseVideo = document.getElementById('showcase-video');
+        const videoOverlay = document.getElementById('video-overlay');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+
+        if (videoContainer && showcaseVideo) {
+            const togglePlay = () => {
+                if (showcaseVideo.paused) {
+                    showcaseVideo.play();
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    // Fade out overlay when playing
+                    videoOverlay.style.opacity = '0';
+                } else {
+                    showcaseVideo.pause();
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    // Fade in overlay when paused
+                    videoOverlay.style.opacity = '1';
+                }
+            };
+
+            videoContainer.addEventListener('click', togglePlay);
+            
+            // Show pause button briefly on hover when playing
+            let timeout;
+            videoContainer.addEventListener('mousemove', () => {
+                if (!showcaseVideo.paused) {
+                    videoOverlay.style.opacity = '1';
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (!showcaseVideo.paused) {
+                            videoOverlay.style.opacity = '0';
+                        }
+                    }, 2000);
+                }
+            });
+            
+            videoContainer.addEventListener('mouseleave', () => {
+                if (!showcaseVideo.paused) {
+                    videoOverlay.style.opacity = '0';
                 }
             });
         }
