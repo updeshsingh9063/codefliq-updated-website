@@ -766,10 +766,8 @@
                 formMessage.className = 'hidden';
 
                 try {
-                    // Make request to backend (assuming deployed on Render or running locally)
-                    const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-                        ? 'http://localhost:5000/api/contacts' 
-                        : 'https://codefliq-backend.onrender.com/api/contacts';
+                    // Always hit the live backend
+                    const backendUrl = 'https://codefliq-updated-website.onrender.com/api/contacts';
 
                     const response = await fetch(backendUrl, {
                         method: 'POST',
