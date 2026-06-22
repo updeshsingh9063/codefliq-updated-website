@@ -555,9 +555,9 @@
                         </div>
                     </div>
                     <hr class="my-6 border-gray-200">
-                    <form class="space-y-6">
+                    <form id="contact-form" class="space-y-6">
                         <p class="text-gray-600">Tell us about your project</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="space-y-2">
                                 <label for="name" class="text-sm font-medium">Your name</label>
                                 <input type="text" id="name" placeholder="Your name" required class="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2">
@@ -565,6 +565,10 @@
                             <div class="space-y-2">
                                 <label for="email" class="text-sm font-medium">Email</label>
                                 <input type="email" id="email" placeholder="Email" required class="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="phone" class="text-sm font-medium">Contact Number</label>
+                                <input type="tel" id="phone" placeholder="Phone number" required class="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-600 focus-visible:ring-offset-2">
                             </div>
                         </div>
                         <div class="space-y-2">
@@ -575,32 +579,35 @@
                             <p class="text-gray-600">I'm looking for...</p>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="Website" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">Website</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="Mobile App" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">Mobile App</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="Web App" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">Web App</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="E-Commerce" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">E-Commerce</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="Brand Identity" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">Brand Identity</span>
                                 </label>
                                 <label class="flex items-center space-x-2">
-                                    <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                                    <input type="checkbox" name="services" value="Other" class="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
                                     <span class="text-sm">Other</span>
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium">Send a message</button>
+                        <button type="submit" id="submit-btn" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium flex justify-center items-center">
+                            <span>Send a message</span>
+                        </button>
+                        <div id="form-message" class="hidden text-center text-sm font-medium p-3 rounded-lg mt-4"></div>
                     </form>
                 </div>
             </div>
@@ -722,6 +729,65 @@
                 });
             }, { threshold: 0.15 });
             mobSlides.forEach(el => mobObserver.observe(el));
+        }
+
+        // Contact Form Submission
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const formMessage = document.getElementById('form-message');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Get form data
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const message = document.getElementById('message').value;
+                
+                // Get checked services
+                const services = Array.from(document.querySelectorAll('input[name="services"]:checked'))
+                    .map(checkbox => checkbox.value);
+
+                const formData = { name, email, phone, details: message, services };
+
+                // Update UI state
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="opacity-0">Send a message</span><div class="absolute w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+                submitBtn.disabled = true;
+                formMessage.className = 'hidden';
+
+                try {
+                    // Make request to backend (assuming deployed on Render or running locally)
+                    const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+                        ? 'http://localhost:5000/api/contacts' 
+                        : 'https://codefliq-backend.onrender.com/api/contacts';
+
+                    const response = await fetch(backendUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        formMessage.textContent = "Thanks! Your message has been sent successfully.";
+                        formMessage.className = "text-center text-sm font-medium p-3 rounded-lg mt-4 bg-emerald-50 text-emerald-600 border border-emerald-200";
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (error) {
+                    console.error("Error submitting form:", error);
+                    formMessage.textContent = "Oops! Something went wrong. Please try again later.";
+                    formMessage.className = "text-center text-sm font-medium p-3 rounded-lg mt-4 bg-red-50 text-red-600 border border-red-200";
+                } finally {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                }
+            });
         }
     </script>
 </body>
